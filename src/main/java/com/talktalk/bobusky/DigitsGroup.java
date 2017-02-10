@@ -17,7 +17,7 @@ public class DigitsGroup {
 
     public void addLast(Digit digit) {
         digits.add(digit);
-//        resolveType();
+        resolveType();
     }
 
     public void add(List<Digit> digits) {
@@ -46,7 +46,11 @@ public class DigitsGroup {
         if (groupType == null && !digits.isEmpty()) {
             Digit firstDigit = digits.get(0);
 
-            groupType = GroupType.mapToGroupType(firstDigit.type);
+            if (GroupType.canMapToGroup(firstDigit.type)) {
+                groupType = GroupType.mapToGroupType(firstDigit.type);
+            } else {
+                throw new RuntimeException("Digit cannot lead a \"digits group\"");
+            }
         }
     }
 }

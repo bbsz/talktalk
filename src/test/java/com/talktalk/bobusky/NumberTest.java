@@ -69,6 +69,8 @@ public class NumberTest {
         }
     }
 
+
+
     private void convertSingleDigitNumber(Digit digit) {
         SingleDigitNumber expected = new SingleDigitNumber(digit.value, digit);
         SingleDigitNumber actual = new SingleDigitNumber(digit.value);

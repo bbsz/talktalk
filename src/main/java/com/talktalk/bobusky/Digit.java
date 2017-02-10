@@ -59,4 +59,9 @@ public enum Digit {
                 .sorted((o1, o2) -> o1.value.compareTo(o2.value))
                 .collect(Collectors.<Digit>toList());
     }
+
+    @Override
+    public String toString() {
+        return " {" + value + ", " + text + "} ";
+    }
 }

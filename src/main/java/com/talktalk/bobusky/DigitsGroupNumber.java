@@ -1,7 +1,6 @@
 package com.talktalk.bobusky;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.collect.Lists;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +32,12 @@ public class DigitsGroupNumber extends Number {
     protected void parseValue() {
 
         List<Digit> group = new ArrayList<>();
-        Digit lastDigit = null;
-        int previousMod = -1;
         int tempValue = value;
 
         while (tempValue > 0) {
+            Digit lastDigit = null;
+            int previousMod = -1;
+
             for (Digit digit : Digit.getSortedExcludingZero()) {
                 int mod = tempValue % digit.value;
 
@@ -51,7 +51,6 @@ public class DigitsGroupNumber extends Number {
 
             if (previousMod > 0) {
                 tempValue = previousMod;
-                previousMod = -1;
             } else {
                 break;
             }
