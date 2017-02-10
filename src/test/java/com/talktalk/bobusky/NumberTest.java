@@ -77,7 +77,7 @@ public class NumberTest {
 
     private void convertDigitsGroupNumber(Digit... digits) {
         DigitsGroup expectedDigitsGroup = new DigitsGroup();
-        expectedDigitsGroup.add(digits);
+        expectedDigitsGroup.add(Arrays.asList(digits));
         Integer value = addUp(digits);
 
         DigitsGroupNumber expected = new DigitsGroupNumber(value, Lists.newArrayList(expectedDigitsGroup));

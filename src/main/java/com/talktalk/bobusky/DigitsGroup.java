@@ -20,7 +20,7 @@ public class DigitsGroup {
 //        resolveType();
     }
 
-    public void add(Digit... digits) {
+    public void add(List<Digit> digits) {
         for (Digit digit : digits) {
             addLast(digit);
         }

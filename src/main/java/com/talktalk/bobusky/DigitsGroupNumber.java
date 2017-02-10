@@ -31,29 +31,35 @@ public class DigitsGroupNumber extends Number {
     }
 
     protected void parseValue() {
-        int modulo = -1;
-        do {
-            modulo = addHighestDigit(value);
-        } while (modulo > 0);
-    }
 
-    private int addHighestDigit(int numberValue) {
+        List<Digit> group = new ArrayList<>();
         Digit lastDigit = null;
         int previousMod = -1;
-        for (Digit digit : Digit.getSortedExcludingZero()) {
-            int mod = numberValue % digit.value;
+        int tempValue = value;
 
-            if (mod == numberValue && previousMod > 0) {
+        while (tempValue > 0) {
+            for (Digit digit : Digit.getSortedExcludingZero()) {
+                int mod = tempValue % digit.value;
+
+                if (mod == tempValue) {
+                    break;
+                }
+                lastDigit = digit;
+                previousMod = mod;
+            }
+            group.add(lastDigit);
+
+            if (previousMod > 0) {
+                tempValue = previousMod;
+                previousMod = -1;
+            } else {
                 break;
             }
-            lastDigit = digit;
-            previousMod = mod;
         }
-        addDigitGroup(lastDigit);
-        return previousMod;
+        addDigitGroup(group);
     }
 
-    private void addDigitGroup(Digit... digits) {
+    private void addDigitGroup(List<Digit> digits) {
         DigitsGroup digitsGroup = new DigitsGroup();
         digitsGroup.add(digits);
         digitsGroups.add(digitsGroup);
