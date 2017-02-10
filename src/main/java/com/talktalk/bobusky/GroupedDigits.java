@@ -6,12 +6,12 @@ import java.util.List;
 /**
  * Created by sergej on 8.2.2017.
  */
-public class DigitsGroup {
+public class GroupedDigits {
 
     private GroupType groupType;
     private List<Digit> digits;
 
-    public DigitsGroup() {
+    public GroupedDigits() {
         this.digits = new ArrayList<>();
     }
 

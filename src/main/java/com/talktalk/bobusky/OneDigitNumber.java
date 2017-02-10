@@ -5,18 +5,18 @@ import com.google.common.annotations.VisibleForTesting;
 /**
  * Created by sergej on 10.2.2017.
  */
-public class SingleDigitNumber extends Number {
+public class OneDigitNumber extends Number {
 
     private Digit digit;
 
-    public SingleDigitNumber(Integer value) {
+    public OneDigitNumber(Integer value) {
         super(value);
         checkSingleDigitNumber();
         parseValue();
     }
 
     @VisibleForTesting
-    SingleDigitNumber(Integer value, Digit digit) {
+    OneDigitNumber(Integer value, Digit digit) {
         super(value);
         this.digit = digit;
     }

@@ -10,11 +10,11 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by sergej on 10.2.2017.
  */
-public class DigitsGroupTest {
+public class GroupedDigitsTest {
 
     @Test
     public void resolveDigitsGroup_Tens() {
-        DigitsGroup dg = new DigitsGroup();
+        GroupedDigits dg = new GroupedDigits();
         assertTrue(dg.getDigits().isEmpty());
         assertNull(dg.getGroupType());
 
@@ -26,7 +26,7 @@ public class DigitsGroupTest {
 
 //    @Test
     public void resolveDigitsGroup_Houndreds() {
-        DigitsGroup dg = new DigitsGroup();
+        GroupedDigits dg = new GroupedDigits();
         assertTrue(dg.getDigits().isEmpty());
         assertNull(dg.getGroupType());
 

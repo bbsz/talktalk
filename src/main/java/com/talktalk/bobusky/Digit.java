@@ -38,9 +38,17 @@ public enum Digit {
     SEVENTY(70, "seventy", DigitType.TENS),
     EIGHTY(80, "eighty", DigitType.TENS),
     NINETY(90, "ninety", DigitType.TENS),
-    HUNDRED(100, "hundred", DigitType.HOUNDREDS),
-    THOUSAND(1000, "thousand", DigitType.THOUSANDS),
-    MILION(1000000, "milion", DigitType.MILLIONS);
+    HUNDRED(100, "one hundred", DigitType.HOUNDREDS),
+    TWO_HUNDRED(200, "two hundred", DigitType.HOUNDREDS),
+    THREE_HUNDRED(300, "three hundred", DigitType.HOUNDREDS),
+    FOUR_HUNDRED(400, "four hundred", DigitType.HOUNDREDS),
+    FIVE_HUNDRED(500, "five hundred", DigitType.HOUNDREDS),
+    SIX_HUNDRED(600, "six hundred", DigitType.HOUNDREDS),
+    SEVEN_HUNDRED(700, "seven hundred", DigitType.HOUNDREDS),
+    EIGHT_HUNDRED(800, "eight hundred", DigitType.HOUNDREDS),
+    NINE_HUNDRED(900, "nine hundred", DigitType.HOUNDREDS),
+    THOUSAND(1000, "one thousand", DigitType.THOUSANDS),
+    MILION(1000000, "one million", DigitType.MILLIONS);
 
     public final Integer value;
     public final String text;

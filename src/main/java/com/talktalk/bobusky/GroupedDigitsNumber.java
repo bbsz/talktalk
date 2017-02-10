@@ -8,33 +8,28 @@ import java.util.List;
 /**
  * Created by sergej on 10.2.2017.
  */
-public class DigitsGroupNumber extends Number {
+public class GroupedDigitsNumber extends Number {
 
-    private List<DigitsGroup> digitsGroups;
+    private List<GroupedDigits> groupedDigitses;
 
-    public DigitsGroupNumber(Integer value) {
+    public GroupedDigitsNumber(Integer value) {
         super(value);
-        this.digitsGroups = new ArrayList<>();
+        this.groupedDigitses = new ArrayList<>();
         checkDigitsGroupNumber();
         parseValue();
     }
 
     @VisibleForTesting
-    DigitsGroupNumber(Integer value, List<DigitsGroup> digitsGroups) {
+    GroupedDigitsNumber(Integer value, List<GroupedDigits> groupedDigitses) {
         super(value);
-        this.digitsGroups = digitsGroups;
+        this.groupedDigitses = groupedDigitses;
     }
 
-    public List<DigitsGroup> getDigitsGroups() {
-        return digitsGroups;
+    public List<GroupedDigits> getGroupedDigitses() {
+        return groupedDigitses;
     }
 
     protected void parseValue() {
-        List<Digit> group = parseTens();
-        addDigitGroup(group);
-    }
-
-    private List<Digit> parseTens() {
         List<Digit> group = new ArrayList<>();
         int tempValue = value;
 
@@ -59,13 +54,13 @@ public class DigitsGroupNumber extends Number {
                 break;
             }
         }
-        return group;
+        addDigitGroup(group);
     }
 
     private void addDigitGroup(List<Digit> digits) {
-        DigitsGroup digitsGroup = new DigitsGroup();
-        digitsGroup.add(digits);
-        digitsGroups.add(digitsGroup);
+        GroupedDigits groupedDigits = new GroupedDigits();
+        groupedDigits.add(digits);
+        groupedDigitses.add(groupedDigits);
     }
 
     private void checkDigitsGroupNumber() {
