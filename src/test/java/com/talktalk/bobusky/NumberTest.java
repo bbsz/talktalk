@@ -4,9 +4,13 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by sergej on 8.2.2017.
@@ -14,70 +18,55 @@ import static org.junit.Assert.*;
 public class NumberTest {
 
     @Test
-    public void constitutesADigitsGroup() {
+    public void isASingleDigitNumber() {
         Arrays.stream(Digit.values()).forEach(d -> {
-            Number number = new Number(d.value);
-            assertFalse(number.constitutesADigitGroup());
+            //  If this was not a single digit number, exception would be thrown...
+            Number number = new SingleDigitNumber(d.value);
         });
+    }
 
-        assertTrue(new Number(21).constitutesADigitGroup());
-        assertTrue(new Number(87).constitutesADigitGroup());
-        assertTrue(new Number(53).constitutesADigitGroup());
-        assertTrue(new Number(121).constitutesADigitGroup());
-        assertTrue(new Number(801).constitutesADigitGroup());
-        assertTrue(new Number(854).constitutesADigitGroup());
-        assertTrue(new Number(888).constitutesADigitGroup());
-        assertTrue(new Number(1001).constitutesADigitGroup());
-        assertTrue(new Number(1010).constitutesADigitGroup());
-        assertTrue(new Number(1111).constitutesADigitGroup());
-        assertTrue(new Number(9900).constitutesADigitGroup());
-        assertTrue(new Number(9990).constitutesADigitGroup());
-        assertTrue(new Number(9999).constitutesADigitGroup());
-        assertTrue(new Number(9999009).constitutesADigitGroup());
+    @Test(expected = RuntimeException.class)
+    public void isNotASingleDigitNumber() {
+        //If is not a single digit number, exception is thrown...
+        new SingleDigitNumber(21);
     }
 
     @Test
     public void convert_singleDigit() {
-        Digit.getSingleDigits().forEach(d -> convertDigits(d));
+        getSingleDigits().forEach(d -> convertSingleDigitNumber(d));
     }
 
     @Test
     public void convert_Teens() {
-        Digit.getTeens().forEach(d -> convertDigits(d));
+        getTeens().forEach(d -> convertSingleDigitNumber(d));
     }
 
     @Test
     public void convert_Tens() {
-        for (Digit tensDigit : Digit.getTens()) {
-            for (Digit singleDigit : Digit.getSingleDigits()) {
+        for (Digit tensDigit : getTens()) {
+            for (Digit singleDigit : getSingleDigits()) {
                 if (singleDigit == Digit.ZERO) {
-                    convertDigits(tensDigit);
+                    convertSingleDigitNumber(tensDigit);
                     continue;
                 }
-                convertDigits(tensDigit, singleDigit);
+                convertDigitsGroupNumber(tensDigit, singleDigit);
             }
         }
     }
 
-    //    @Test
-    public void convert_27() {
-        DigitsGroup expectedDigitsGroup = new DigitsGroup();
-        expectedDigitsGroup.addLast(Digit.TWENTY);
-        expectedDigitsGroup.addLast(Digit.SEVEN);
-
-        Number expectedNumber = new Number(27, Lists.newArrayList(expectedDigitsGroup));
-        Number number = new Number(27);
-
-        assertNumber(expectedNumber, number);
+    private void convertSingleDigitNumber(Digit digit) {
+        SingleDigitNumber expected = new SingleDigitNumber(digit.value, digit);
+        SingleDigitNumber actual = new SingleDigitNumber(digit.value);
+        assertNumber(expected, actual);
     }
 
-    private void convertDigits(Digit... digits) {
+    private void convertDigitsGroupNumber(Digit... digits) {
         DigitsGroup expectedDigitsGroup = new DigitsGroup();
         expectedDigitsGroup.add(digits);
 
         Integer value = addUp(digits);
-        Number expectedNumber = new Number(value, Lists.newArrayList(expectedDigitsGroup));
-        Number number = new Number(value);
+        Number expectedNumber = new DigitsGroupNumber(value, Lists.newArrayList(expectedDigitsGroup));
+        Number number = new DigitsGroupNumber(value);
 
         assertNumber(expectedNumber, number);
     }
@@ -90,13 +79,26 @@ public class NumberTest {
         return value;
     }
 
+    private void assertNumber(SingleDigitNumber expected, SingleDigitNumber actual) {
+        assertThat(actual.getDigit(), is(expected.getDigit()));
+    }
+
+    //    private void assertNumber(SingleDigitNumber expected, SingleDigitNumber actual) {
+//        assertThat("ExpectNumber " + expected.getValue(), actual.getDigitsGroups().size(), is(expected.getDigitsGroups().size()));
+//        for (int i = 0; i < expected.getDigitsGroups().size(); i++) {
+//            DigitsGroup actualDigitsGroup = actual.getDigitsGroups().get(i);
+//            DigitsGroup expectedDigitsGroup = expected.getDigitsGroups().get(i);
+//            assertDigitGroup(expectedDigitsGroup, actualDigitsGroup);
+//        }
+//    }
+//
     private void assertNumber(Number expectedNumber, Number actualNumber) {
-        assertThat("ExpectNumber " + expectedNumber.getValue(), expectedNumber.getDigitsGroups().size(), is(actualNumber.getDigitsGroups().size()));
-        for (int i = 0; i < expectedNumber.getDigitsGroups().size(); i++) {
-            DigitsGroup actualDigitsGroup = actualNumber.getDigitsGroups().get(i);
-            DigitsGroup expectedDigitsGroup = expectedNumber.getDigitsGroups().get(i);
-            assertDigitGroup(expectedDigitsGroup, actualDigitsGroup);
-        }
+//        assertThat("ExpectNumber " + expectedNumber.getValue(), actualNumber.getDigitsGroups().size(), is(expectedNumber.getDigitsGroups().size()));
+//        for (int i = 0; i < expectedNumber.getDigitsGroups().size(); i++) {
+//            DigitsGroup actualDigitsGroup = actualNumber.getDigitsGroups().get(i);
+//            DigitsGroup expectedDigitsGroup = expectedNumber.getDigitsGroups().get(i);
+//            assertDigitGroup(expectedDigitsGroup, actualDigitsGroup);
+//        }
     }
 
     private void assertDigitGroup(DigitsGroup expectedDG, DigitsGroup actualDG) {
@@ -107,6 +109,21 @@ public class NumberTest {
             Digit actualDigit = actualDG.getDigits().get(i);
             assertSame(expectedDigit, actualDigit);
         }
+    }
+
+    private List<Digit> getSingleDigits() {
+        Stream<Digit> digits = Arrays.stream(Digit.values());
+        return digits.filter(d -> d.type == DigitType.SINGLE_DIGIT).collect(Collectors.toList());
+    }
+
+    private List<Digit> getTeens() {
+        Stream<Digit> digits = Arrays.stream(Digit.values());
+        return digits.filter(d -> d.type == DigitType.TEENS).collect(Collectors.toList());
+    }
+
+    private List<Digit> getTens() {
+        Stream<Digit> digits = Arrays.stream(Digit.values());
+        return digits.filter(d -> d.type == DigitType.TENS).collect(Collectors.toList());
     }
 
 }

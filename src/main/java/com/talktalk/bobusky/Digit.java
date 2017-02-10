@@ -52,35 +52,11 @@ public enum Digit {
         this.type = type;
     }
 
-    public static boolean isSingleDigit(Integer value) {
-        return getSingleDigits().stream().anyMatch(digit -> digit.value == value);
-    }
-
     public static List<Digit> getSortedExcludingZero() {
         Stream<Digit> digits = Arrays.stream(Digit.values());
 
         return digits.filter(d -> d.value != ZERO.value)
                 .sorted((o1, o2) -> o1.value.compareTo(o2.value))
                 .collect(Collectors.<Digit>toList());
-    }
-
-    public static List<Digit> getSingleDigits() {
-        Stream<Digit> digits = Arrays.stream(Digit.values());
-        return digits.filter(d -> d.type == DigitType.SINGLE_DIGIT).collect(Collectors.toList());
-    }
-
-    public static List<Digit> getTeens() {
-        Stream<Digit> digits = Arrays.stream(Digit.values());
-        return digits.filter(d -> d.type == DigitType.TEENS).collect(Collectors.toList());
-    }
-
-    public static List<Digit> getTens() {
-        Stream<Digit> digits = Arrays.stream(Digit.values());
-        return digits.filter(d -> d.type == DigitType.TENS).collect(Collectors.toList());
-    }
-
-    @Override
-    public String toString() {
-        return " {" + value + ", " + text + "} ";
     }
 }
