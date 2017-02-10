@@ -69,7 +69,20 @@ public class NumberTest {
         }
     }
 
-
+    @Test
+    public void convert_Houndreds() {
+        for (Digit houndredsDigit : getHoundreds()) {
+            for (Digit tensDigit : getTens()) {
+                for (Digit singleDigit : getSingleDigits()) {
+                    if (singleDigit == Digit.ZERO) {
+                        convertSingleDigitNumber(tensDigit);
+                        continue;
+                    }
+                    convertDigitsGroupNumber(houndredsDigit, tensDigit, singleDigit);
+                }
+            }
+        }
+    }
 
     private void convertSingleDigitNumber(Digit digit) {
         SingleDigitNumber expected = new SingleDigitNumber(digit.value, digit);
@@ -131,6 +144,11 @@ public class NumberTest {
     private List<Digit> getTens() {
         Stream<Digit> digits = Arrays.stream(Digit.values());
         return digits.filter(d -> d.type == DigitType.TENS).collect(Collectors.toList());
+    }
+
+    private List<Digit> getHoundreds() {
+        Stream<Digit> digits = Arrays.stream(Digit.values());
+        return digits.filter(d -> d.type == DigitType.HOUNDREDS).collect(Collectors.toList());
     }
 
 }

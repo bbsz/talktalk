@@ -30,7 +30,11 @@ public class DigitsGroupNumber extends Number {
     }
 
     protected void parseValue() {
+        List<Digit> group = parseTens();
+        addDigitGroup(group);
+    }
 
+    private List<Digit> parseTens() {
         List<Digit> group = new ArrayList<>();
         int tempValue = value;
 
@@ -55,7 +59,7 @@ public class DigitsGroupNumber extends Number {
                 break;
             }
         }
-        addDigitGroup(group);
+        return group;
     }
 
     private void addDigitGroup(List<Digit> digits) {

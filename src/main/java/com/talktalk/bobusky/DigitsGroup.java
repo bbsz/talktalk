@@ -34,11 +34,6 @@ public class DigitsGroup {
         return groupType;
     }
 
-    @Override
-    public String toString() {
-        return "com.talktalk.bobusky.DigitsGroup{" + digits.stream().map(digit -> digit.toString()) + "}";
-    }
-
     /**
      * Resolves group type based on the type of the first digit in the group...
      */
@@ -49,7 +44,7 @@ public class DigitsGroup {
             if (GroupType.canMapToGroup(firstDigit.type)) {
                 groupType = GroupType.mapToGroupType(firstDigit.type);
             } else {
-                throw new RuntimeException("Digit cannot lead a \"digits group\"");
+                throw new RuntimeException("Leading digit cannot be mapped...");
             }
         }
     }
