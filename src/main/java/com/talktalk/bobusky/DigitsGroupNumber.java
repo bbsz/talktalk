@@ -16,6 +16,8 @@ public class DigitsGroupNumber extends Number {
     public DigitsGroupNumber(Integer value) {
         super(value);
         this.digitsGroups = new ArrayList<>();
+        checkDigitsGroupNumber();
+        parseValue();
     }
 
     @VisibleForTesting
@@ -41,7 +43,7 @@ public class DigitsGroupNumber extends Number {
         for (Digit digit : Digit.getSortedExcludingZero()) {
             int mod = numberValue % digit.value;
 
-            if (mod == numberValue && previousMod == 0) {
+            if (mod == numberValue && previousMod > 0) {
                 break;
             }
             lastDigit = digit;
@@ -55,5 +57,11 @@ public class DigitsGroupNumber extends Number {
         DigitsGroup digitsGroup = new DigitsGroup();
         digitsGroup.add(digits);
         digitsGroups.add(digitsGroup);
+    }
+
+    private void checkDigitsGroupNumber() {
+        if (isSingleDigitNumber()) {
+            throw new RuntimeException("Not a digits group number...");
+        }
     }
 }

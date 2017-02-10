@@ -12,7 +12,6 @@ public abstract class Number {
 
     public Number(Integer value) {
         this.value = value;
-        parseValue();
     }
 
     public int getValue() {

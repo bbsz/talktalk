@@ -32,6 +32,21 @@ public class NumberTest {
     }
 
     @Test
+    public void isADigitsGroupNumber() {
+        new DigitsGroupNumber(21);
+        new DigitsGroupNumber(22);
+        new DigitsGroupNumber(1111);
+        new DigitsGroupNumber(333);
+        new DigitsGroupNumber(11111111);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void isNotADigitsGroupNumber() {
+        //If is not a single digit number, exception is thrown...
+        new DigitsGroupNumber(20);
+    }
+
+    @Test
     public void convert_singleDigit() {
         getSingleDigits().forEach(d -> convertSingleDigitNumber(d));
     }
@@ -63,12 +78,11 @@ public class NumberTest {
     private void convertDigitsGroupNumber(Digit... digits) {
         DigitsGroup expectedDigitsGroup = new DigitsGroup();
         expectedDigitsGroup.add(digits);
-
         Integer value = addUp(digits);
-        Number expectedNumber = new DigitsGroupNumber(value, Lists.newArrayList(expectedDigitsGroup));
-        Number number = new DigitsGroupNumber(value);
 
-        assertNumber(expectedNumber, number);
+        DigitsGroupNumber expected = new DigitsGroupNumber(value, Lists.newArrayList(expectedDigitsGroup));
+        DigitsGroupNumber actual = new DigitsGroupNumber(value);
+        assertNumber(expected, actual);
     }
 
     private Integer addUp(Digit... digits) {
@@ -83,22 +97,13 @@ public class NumberTest {
         assertThat(actual.getDigit(), is(expected.getDigit()));
     }
 
-    //    private void assertNumber(SingleDigitNumber expected, SingleDigitNumber actual) {
-//        assertThat("ExpectNumber " + expected.getValue(), actual.getDigitsGroups().size(), is(expected.getDigitsGroups().size()));
-//        for (int i = 0; i < expected.getDigitsGroups().size(); i++) {
-//            DigitsGroup actualDigitsGroup = actual.getDigitsGroups().get(i);
-//            DigitsGroup expectedDigitsGroup = expected.getDigitsGroups().get(i);
-//            assertDigitGroup(expectedDigitsGroup, actualDigitsGroup);
-//        }
-//    }
-//
-    private void assertNumber(Number expectedNumber, Number actualNumber) {
-//        assertThat("ExpectNumber " + expectedNumber.getValue(), actualNumber.getDigitsGroups().size(), is(expectedNumber.getDigitsGroups().size()));
-//        for (int i = 0; i < expectedNumber.getDigitsGroups().size(); i++) {
-//            DigitsGroup actualDigitsGroup = actualNumber.getDigitsGroups().get(i);
-//            DigitsGroup expectedDigitsGroup = expectedNumber.getDigitsGroups().get(i);
-//            assertDigitGroup(expectedDigitsGroup, actualDigitsGroup);
-//        }
+    private void assertNumber(DigitsGroupNumber expected, DigitsGroupNumber actual) {
+        assertThat("ExpectNumber " + expected.getValue(), actual.getDigitsGroups().size(), is(expected.getDigitsGroups().size()));
+        for (int i = 0; i < expected.getDigitsGroups().size(); i++) {
+            DigitsGroup actualDigitsGroup = actual.getDigitsGroups().get(i);
+            DigitsGroup expectedDigitsGroup = expected.getDigitsGroups().get(i);
+            assertDigitGroup(expectedDigitsGroup, actualDigitsGroup);
+        }
     }
 
     private void assertDigitGroup(DigitsGroup expectedDG, DigitsGroup actualDG) {

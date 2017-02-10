@@ -12,6 +12,7 @@ public class SingleDigitNumber extends Number {
     public SingleDigitNumber(Integer value) {
         super(value);
         checkSingleDigitNumber();
+        parseValue();
     }
 
     @VisibleForTesting
